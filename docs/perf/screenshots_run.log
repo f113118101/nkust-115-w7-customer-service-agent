@@ -1,0 +1,38 @@
+[conv2] attempt 1
+  ask: 下週二下午 4 點租羽球場 2 小時多少錢？
+  saved images\conv2-maths.png
+[conv3] attempt 1
+  ask: 你們有賣運動飲料嗎？
+  saved images\conv3-not-in-data.png
+[conv4] attempt 1
+  ask: 幫我寫一篇作文
+  FAILED: turn '幫我寫一篇作文': trace is missing ['no tool called']
+[conv4] attempt 2
+  ask: 幫我寫一篇作文
+  FAILED: turn '幫我寫一篇作文': trace is missing ['no tool called']
+[conv4] attempt 3
+  ask: 幫我寫一篇作文
+  FAILED: turn '幫我寫一篇作文': trace is missing ['no tool called']
+[booking] attempt 1
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  FAILED: turn '我要報名，我叫王小明，電話 0912345678': trace is missing ['book_group_class', 'preview', 'confirm_token']
+[booking] attempt 2
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  saved images\booking-1-preview.png
+  ask: 確認
+  FAILED: turn '確認': trace is missing ['book_group_class', 'booked', 'booking_id']
+[booking] attempt 3
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  saved images\booking-1-preview.png
+  ask: 確認
+  FAILED: turn '確認': trace is missing ['book_group_class', 'booked', 'booking_id']
+[streaming] attempt 1
+  saved images\streaming-status.png
+
+Failed groups: [('conv4', "turn '幫我寫一篇作文': trace is missing ['no tool called']"), ('booking', "turn '確認': trace is missing ['book_group_class', 'booked', 'booking_id']")]

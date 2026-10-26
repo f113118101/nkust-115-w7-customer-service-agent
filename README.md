@@ -6,7 +6,7 @@ They can also book or cancel a group class or a private coach session. Every ans
 and the money is calculated in code, never by the model.
 
 > Course homework: Unit G, My AI Customer Service Agent, with a Database and Tools
-> Student: [Student ID] Wenxin Shen
+> Student: F113118101 Wenxin Shen (沈文鑫)
 
 ![Main screen of my agent, with the tool trace](images/screenshot-main.png)
 
@@ -69,7 +69,7 @@ and the agent answers only from what the tool returns. The chat page shows each 
   | `transfer_to_human(reason)` | hand over | staff phone, LINE, service hours and a case summary |
 
 - **Safety:** the model never writes SQL (all queries use `?` parameters); unknown tool names and wrong arguments return
-  `{"error": ...}`; the loop stops after `MAX_STEPS` model calls; phone numbers are masked (`0912***678`) in tool results;
+  `{"error": ...}`; the loop stops after `MAX_STEPS` model calls; phone numbers are masked (`0912xxx678`, `曾○琪`) in tool results;
   an LLM call that takes more than 30 s returns a friendly message with the center's phone number.
 
 ## Sample Conversations
@@ -180,3 +180,5 @@ The plan we worked from is in [`docs/CLAUDE_CODE_PLAN.md`](docs/CLAUDE_CODE_PLAN
 - Notify a waitlisted customer when they are moved into a class, and cancel classes automatically when they are still short of
   the minimum 24 hours before the start.
 - Keep bookings in a database that survives restarts.
+- Watch the model's booking replies: before the fix in `docs/test_results.md` section 6 it added a check-in sentence that
+  is not in the data. If the center has a real check-in rule, add it to `facility_info.csv`.

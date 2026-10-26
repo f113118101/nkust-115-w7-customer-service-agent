@@ -1,0 +1,29 @@
+[conv4] attempt 1
+  ask: 幫我寫一篇作文
+  saved images\conv4-not-our-job.png
+[booking] attempt 1
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  saved images\booking-1-preview.png
+  ask: 確認
+  saved images\_debug_booking_2.png
+  FAILED: turn '確認': trace check failed ['book_group_class', 'booked', 'booking_id'] (see images/_debug_booking_2.png)
+[booking] attempt 2
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  saved images\booking-1-preview.png
+  ask: 確認
+  saved images\_debug_booking_2.png
+  FAILED: turn '確認': trace check failed ['booked', 'booking_id'] (see images/_debug_booking_2.png)
+[booking] attempt 3
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  saved images\booking-1-preview.png
+  ask: 確認
+  saved images\_debug_booking_2.png
+  FAILED: turn '確認': trace check failed ['booked', 'booking_id'] (see images/_debug_booking_2.png)
+
+Failed groups: [('booking', "turn '確認': trace check failed ['booked', 'booking_id'] (see images/_debug_booking_2.png)")]

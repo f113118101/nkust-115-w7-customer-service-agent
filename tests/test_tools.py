@@ -244,7 +244,7 @@ def test_preview_does_not_write():
     before = count_enrollments("G01", SAT)
     r = call("book_group_class", class_id="G01", session_date=SAT, member_name="測試者", phone="0912345678")
     assert r["status"] == "preview" and r["confirm_token"]
-    assert r["summary"]["phone"] == "0912***678"
+    assert r["summary"]["phone"] == "0912xxx678"
     assert count_enrollments("G01", SAT) == before
 
 
@@ -346,7 +346,7 @@ def test_cancel_promotes_waitlist():
     _, r = cancel("group", seed_id("0922000001"), "0922000001")
     assert r["status"] == "cancelled"
     promoted = r["promoted_from_waitlist"]
-    assert promoted["member_name"] == "曾*琪" and promoted["phone"] == "0922***009"
+    assert promoted["member_name"] == "曾○琪" and promoted["phone"] == "0922xxx009"
     assert r["session"]["enrolled"] == 8 and r["session"]["waitlist"] == 0
 
 

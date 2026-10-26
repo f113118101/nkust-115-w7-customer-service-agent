@@ -348,7 +348,7 @@ def run_agent(user_msg, history) -> (reply, trace):
    - Section 5 測試準確率與修正
    - Section 7 加分項：預約寫入工具（兩段式確認）、團課成團/候補邏輯、別名比對、中英雙語
    - 列出使用者需要手動截的圖（四類對話 + 預約流程，**都要看得到右側工具軌跡**）
-4. Git：`git init`、確認 `git status` 中沒有 `.env` 與 `*.db` 才 commit。**推送到 GitHub（帳號 wenxin322，Public repo）前先詢問使用者。**
+4. Git：`git init`、確認 `git status` 中沒有 `.env` 與 `*.db` 才 commit。**推送到 GitHub（帳號 f113118101，Public repo）前先詢問使用者。**
 
 ---
 

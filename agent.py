@@ -9,6 +9,7 @@ run_agent_stream() 是 generator，邊執行邊 yield 事件給 UI；run_agent()
 """
 import json
 import os
+import re
 import time
 
 from dotenv import load_dotenv
@@ -207,6 +208,19 @@ def parse_json_reply(text):
     return None
 
 
+# ---------- 回答清理 ----------
+
+# 模型偶爾把工具的欄位名稱寫進回答，例如「已確定成團（is_confirmed: true）」「已報名（enrolled）」。
+# system prompt 已禁止，但實測仍會出現，所以最後在程式裡移除這類括號片段。
+_FIELD_IN_PARENS = re.compile(r"\s*[（(]\s*[A-Za-z]+(?:_[A-Za-z]+)+\s*[:：=]\s*[^（）()\n]{0,30}[）)]")
+_STATUS_IN_PARENS = re.compile(r"\s*[（(]\s*(?:enrolled|waitlist|cancelled|booked|preview|true|false)\s*[）)]",
+                               re.IGNORECASE)
+
+
+def strip_field_names(text):
+    return _STATUS_IN_PARENS.sub("", _FIELD_IN_PARENS.sub("", text or ""))
+
+
 # ---------- 歷史 ----------
 
 def _is_customer_turn(m):
@@ -385,6 +399,10 @@ def run_agent_stream(user_msg, history=None):
                       "result": {"error": f"stopped after max_steps={MAX_STEPS}"}})
         reply = BUSY_REPLY
         messages.append({"role": "assistant", "content": reply})
+    else:
+        reply = strip_field_names(reply)
+        if messages[-1].get("role") == "assistant":
+            messages[-1] = {**messages[-1], "content": reply}
     yield ("done", reply, trace, [_history_message(m) for m in messages[1:]])
 
 

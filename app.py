@@ -106,19 +106,21 @@ def build_ui():
         llm_history = gr.State([])
         with gr.Row():
             with gr.Column(scale=3):
-                chatbot = _chatbot(value=[{"role": "assistant", "content": GREETING}], height=520, label="對話")
+                chatbot = _chatbot(value=[{"role": "assistant", "content": GREETING}], height=520, label="對話",
+                                   elem_id="chat")
                 with gr.Row():
                     msg = gr.Textbox(placeholder="請輸入您的問題，例如：週六早上租羽球場 2 小時多少錢？",
-                                     show_label=False, scale=5)
+                                     show_label=False, scale=5, elem_id="msg-box")
                     send = gr.Button("送出", variant="primary", scale=1)
                 gr.Markdown("**範例問題**（點一下直接發問）")
                 example_buttons = [gr.Button(q, size="sm") for q in EXAMPLES]
-                clear_btn = gr.Button("清除對話")
+                clear_btn = gr.Button("清除對話", elem_id="clear-btn")
             with gr.Column(scale=2):
                 gr.Markdown("### 🔧 Tools used")
                 status = gr.Markdown(status_text())
-                timing = gr.Markdown("")
-                trace_view = gr.JSON(label="本輪工具軌跡（tool / args / result / 秒數）", value=[])
+                timing = gr.Markdown("", elem_id="timing")
+                trace_view = gr.JSON(label="本輪工具軌跡（tool / args / result / 秒數）", value=[], open=True,
+                                 elem_id="trace")
 
         outputs = [msg, chatbot, llm_history, trace_view, timing, status]
         send.click(respond, [msg, chatbot, llm_history], outputs)

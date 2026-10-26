@@ -1,0 +1,28 @@
+[conv1] attempt 1
+  ask: 學生游泳一次多少錢？
+  saved images\conv1-in-data.png
+  saved images\screenshot-main.png
+[conv2] attempt 1
+  ask: 下週二下午 4 點租羽球場 2 小時多少錢？
+  saved images\conv2-maths.png
+[conv3] attempt 1
+  ask: 你們有賣運動飲料嗎？
+  saved images\conv3-not-in-data.png
+[conv4] attempt 1
+  ask: 幫我寫一篇作文
+  saved images\conv4-not-our-job.png
+[booking] attempt 1
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  saved images\booking-1-preview.png
+  ask: 確認
+  saved images\booking-2-confirmed.png
+  ask: 現在空中瑜珈報名幾個人了？成團了嗎？
+  saved images\booking-3-count.png
+  ask: 另外，我朋友周建宏要取消他這週二 TRX 的報名，報名編號 4，電話 0922000001
+  saved images\booking-4-cancel-preview.png
+  ask: 確認
+  saved images\booking-5-waitlist-promotion.png
+
+Done.

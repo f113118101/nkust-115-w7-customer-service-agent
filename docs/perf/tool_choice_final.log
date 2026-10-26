@@ -1,0 +1,27 @@
+[PASS] #1  10.2s (first text  10.1s) 營業時間到幾點？ -> get_center_info (all: ['get_center_info'])
+[PASS] #2   3.7s (first text   2.8s) 怎麼搭捷運到你們那邊？ -> get_center_info (all: ['get_center_info'])
+[PASS] #3   4.9s (first text   4.1s) 健身房可以穿拖鞋嗎？ -> get_center_info (all: ['get_center_info'])
+[PASS] #4   6.1s (first text   5.7s) 你們有停車場嗎？ -> get_center_info (all: ['get_center_info'])
+[PASS] #5   4.5s (first text   4.2s) 櫃台可以刷卡嗎？ -> get_center_info (all: ['get_center_info'])
+[PASS] #6   3.2s (first text   2.6s) 學生游泳票一次多少錢？ -> search_services (all: ['search_services'])
+[PASS] #7   6.3s (first text   4.9s) 桌球場租借怎麼收費？ -> search_services (all: ['search_services', 'get_center_info'])
+[PASS] #8   4.7s (first text   4.1s) 可以租籃球場嗎？ -> search_services (all: ['search_services'])
+[PASS] #9   2.8s (first text   2.3s) What time do you open? -> get_center_info (all: ['get_center_info'])
+[FAIL] #10  14.4s (first text  12.6s) 這週六早上 9 點租羽球場 3 小時多少錢？ -> get_center_info (all: ['get_center_info', 'calculate_cost']) calc: tool 950 = reply
+[PASS] #11  11.3s (first text  10.0s) 私人教練上 12 堂總共要多少錢？ -> calculate_cost (all: ['calculate_cost']) calc: tool 13200 = reply
+[PASS] #12   9.2s (first text   8.6s) 我要買 3 張游泳學生票，總共多少？ -> calculate_cost (all: ['calculate_cost']) calc: tool 240 = reply
+[PASS] #13  11.3s (first text   3.9s) 我每週游泳 3 次，買月卡還是回數票比較省？ -> compare_plans (all: ['compare_plans']) calc: tool 960 = reply
+[PASS] #14  10.2s (first text   3.5s) 週三的 Zumba 額滿了嗎？ -> list_group_classes (all: ['list_group_classes'])
+[PASS] #15  26.7s (first text  25.5s) 這週有哪些團體課？ -> list_group_classes (all: ['list_group_classes'])
+[PASS] #16  16.3s (first text  16.3s) 明天有游泳教練可以上一對一嗎？ -> find_private_slots (all: ['find_private_slots'])
+[PASS] #17  79.7s (first text  64.9s) 我要報名這週六的兒童游泳班，林小華 0911222333 -> list_group_classes (all: ['list_group_classes', 'book_group_class'])
+[PASS] #18  19.1s (first text  17.2s) 我要客訴，櫃台人員態度很差 -> transfer_to_human (all: ['transfer_to_human'])
+[FAIL] #19  30.1s (first text  30.1s) 我在泳池滑倒受傷了，要找負責人 -> none (all: [])
+[PASS] #20  88.7s (first text  82.9s) 你們有賣泳鏡嗎？ -> search_services (all: ['search_services', 'transfer_to_human'])
+[PASS] #21 125.8s (first text  97.0s) 可以帶狗進去嗎？ -> get_center_info (all: ['get_center_info', 'get_center_info', 'search_services', 'transfer_to_human'])
+[PASS] #22   9.2s (first text   9.2s) 幫我寫一首關於秋天的詩 -> none (all: [])
+[PASS] #23  52.8s (first text  26.9s) 今天台積電股價多少？ -> none (all: [])
+[PASS] #24   8.5s (first text   7.5s) 推薦一間高雄市區別家健身房 -> none (all: [])
+
+Tool choice: 22/24 = 92%   Calculation: 4/4   Average: 23.3 s   Max: 125.8 s   First text: 19.0 s
+Wrote docs\tool_selection_results_final.md

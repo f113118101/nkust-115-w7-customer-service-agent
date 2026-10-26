@@ -26,6 +26,10 @@ PHONE_RE = re.compile(r"09\d{8}")
 WEEKDAY_ZH = {1: "週一", 2: "週二", 3: "週三", 4: "週四", 5: "週五", 6: "週六", 7: "週日"}
 IDENTITY_ZH = {"adult": "全票", "student": "學生票", "half": "半票"}
 # 查不到時提示模型：這代表「資料裡沒有」，不代表「本館沒有」
+# 預約成功後提示模型：只報編號與上課資訊；實測模型常自行加上「憑編號報到」等資料中沒有的流程
+BOOKED_STEP = ("tell the customer the booking_id and the session details only. Do not mention check-in, ID, "
+               "arrival or any other procedure at all (neither that one exists nor that none exists): it is not "
+               "in our data. Describe class status in plain words, never as field names like is_confirmed")
 NOT_IN_DATA_STEP = ("not in our data: tell the customer you don't have this information "
                     "(do not say the center doesn't offer it) and call transfer_to_human")
 
@@ -46,16 +50,17 @@ def tool(fn):
 
 # ---------- 共用 helper ----------
 
+# 遮罩字元不用 *：聊天框以 Markdown 顯示，* 會被當成斜體符號吃掉（「曾*琪」會變成「曾琪」）
 def mask_phone(phone):
-    return phone[:4] + "***" + phone[-3:]
+    return phone[:4] + "xxx" + phone[-3:]
 
 
 def mask_name(name):
     if len(name) <= 1:
         return name
     if len(name) == 2:
-        return name[0] + "*"
-    return name[0] + "*" * (len(name) - 2) + name[-1]
+        return name[0] + "○"
+    return name[0] + "○" * (len(name) - 2) + name[-1]
 
 
 def parse_date(value, field="date"):
@@ -588,7 +593,7 @@ def book_group_class(class_id, session_date, member_name, phone, confirm_token=N
         (cls["class_id"], d.isoformat(), name, phone, will_be, db.now().isoformat(timespec="seconds")))
     result = {"status": "booked", "booking_type": "group", "booking_id": booking_id,
               "enrollment_status": will_be, "member_name": name, "phone": mask_phone(phone),
-              "session": _session_info(cls, d)}
+              "session": _session_info(cls, d), "next_step": BOOKED_STEP}
     if will_be == "waitlist":
         result["waitlist_position"] = _class_counts(cls["class_id"], d.isoformat())[1]
     return result
@@ -645,7 +650,8 @@ def book_private_session(coach_id, date, start_time, member_name, phone, confirm
         (coach["coach_id"], d.isoformat(), t, name, phone, db.now().isoformat(timespec="seconds")))
     return {"status": "booked", "booking_type": "private", "booking_id": booking_id,
             "coach": coach["name"], "date": d.isoformat(), "start_time": t, "end_time": fmt_min(start + SESSION_MIN),
-            "price": coach["private_price"], "member_name": name, "phone": mask_phone(phone)}
+            "price": coach["private_price"], "member_name": name, "phone": mask_phone(phone),
+            "next_step": BOOKED_STEP}
 
 
 # ---------- 9. 取消預約 ----------

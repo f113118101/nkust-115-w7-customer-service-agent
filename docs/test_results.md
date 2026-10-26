@@ -124,3 +124,26 @@ What we found before stopping:
 
 - **v1, #13 failed** (我每週游泳 3 次，買月卡還是回數票比較省？): the model asked "成人、學生還是半票？" instead of calling `compare_plans`. We ran #13 four times with each version of the tool descriptions: **new short descriptions 1/4, original descriptions 4/4.** The short `identity` description no longer said "Default adult". **Change 3d was reverted**: tool descriptions are byte-for-byte the originals again.
 - **v2, #10 and #11 failed metric 1**: the model first looked up `get_center_info(court_peak_hours)` or `search_services`, *then* called `calculate_cost`. The amounts were still correct and came from the tool (metric 2: 4/4). To see whether this was caused by the optimisation, we ran #10 and #11 four times each with the old and the new code: **old code 7/8, new code 8/8.** The old code makes the same mistake now and then, so this is run-to-run variation, not a regression. Nothing else was reverted.
+
+## 6. Screenshot run (Playwright) and problems still open
+
+The screenshots in `images/` were taken by `tests/take_screenshots.py` (restart app → ask → wait until the turn is finished → check the trace → save). Two findings:
+
+- **A bug in the first version of the screenshot script, not in the agent.** It decided a turn was finished when the timing text "changed", which sometimes happened before the new turn had started, so it captured the *previous* turn's trace. The booking step 「確認」 then looked as if the model had made a second preview. Logging the real requests showed that the confirm_token was in the history and the booking was written. The script now waits until "本輪總耗時" disappears and then appears again.
+- **Problems the screenshots showed, and how we fixed them:**
+
+  | Problem | Seen in | Fix | Result |
+  |---|---|---|---|
+  | After a booking, the reply added a check-in sentence that is not in our data (「請憑預訂編號準時參加」「請憑報名編號…前往報到」) | 3 of 3 runs | The `booked` result now carries `next_step`: give the booking_id and session details only, and do not mention any check-in, ID or arrival procedure. The first wording ("our data has no check-in procedure") made the model say 「無需額外的簽到或證件程序」, which is also not in the data, so the hint now says not to mention it either way | Final run: 「您已成功報名…報名編號為 26…尚餘 4 個名額」, no procedure |
+  | Raw field names in replies: 「（is_confirmed: true）」「（enrolled）」「（waitlist_will_be_promoted: true）」 | 2 of 3 runs, despite the prompt rule | `agent.strip_field_names()` removes such brackets from the final reply in code (unit tests added) | Final run: none |
+  | Masked names and phones lost their `*` in the chat (「曾*琪」 showed as 「曾琪」, 「0922***009」 as 「0922**009」), because the chat renders Markdown and `*` means italics | every run since the start | Mask with `xxx` and `○` instead (`0912xxx678`, `曾○琪`) | Final run: 「曾○琪（電話 0922xxx009）」 |
+
+  Unit tests after these fixes: **109 passed**.
+
+### Final tool-choice run (used for the report screenshot)
+
+`python tests/run_tool_selection.py` → [`tool_selection_results_final.md`](tool_selection_results_final.md), output image `images/tool-choice-test.png`:
+**22/24 = 92%, calculation 4/4, average 23.3 s, max 125.8 s.**
+- #10: looked up peak hours first, then `calculate_cost` (amount 950 correct) – the same run-to-run variation as in section 5.4.
+- #19 (「我在泳池滑倒受傷了，要找負責人」): **not a routing error.** The LLM call went over the 30 s timeout added in section 5 (the endpoint was very slow during this run; one question took 125.8 s), so the customer got the timeout message with the phone number and no tool was called.
+- This run used the code before the three fixes above; those fixes only change booking replies and masking, not tool choice.

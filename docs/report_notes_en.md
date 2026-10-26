@@ -9,8 +9,8 @@ words where the template asks for that (sections 1 and 6 especially). Numbers co
 
 | Item | Answer |
 |---|---|
-| Student ID | [Student ID] |
-| Name | Wenxin Shen |
+| Student ID | F113118101 |
+| Name | Wenxin Shen (沈文鑫) |
 | Your shop or office | Gangshan Sports Center (高雄市岡山運動中心, operated by 舞動陽光), Kaohsiung |
 | Model you used | `Furen-large` on the NKUST iAI endpoint (OpenAI-compatible, native tool calling) |
 | How you built the chat screen | Gradio (Blocks), Python |
@@ -148,7 +148,7 @@ Also worth one or two sentences (from `docs/test_results.md` sections 2 and 5):
 |---|---|
 | Which AI tools | Claude Code (Anthropic) |
 | Where | In the console (command line), inside the project folder |
-| About how many hours | [fill in, e.g. about N hours] |
+| About how many hours | About 5 hours |
 | What for | Turning my written plan (`docs/CLAUDE_CODE_PLAN.md`) into CSV data, tools, the agent loop and the Gradio page; writing unit tests and test scripts; running the tests against the real model; finding and fixing problems; writing the README and these notes. I reviewed each phase and made the decisions (data rules, booking rules, which model, what to stop). |
 
 ### 6.2 Problems You Met, and How You Solved Them
@@ -179,6 +179,10 @@ Also worth one or two sentences (from `docs/test_results.md` sections 2 and 5):
      help). The test report now says this honestly.
    - Claude Code deleted a finished set of test results by mistake when I asked it to stop the model comparison; it told me,
      and the numbers in the report did not depend on them.
+8. **Booking screenshots.** The automatic screenshots showed three problems: a check-in sentence that is not in our data,
+   raw field names such as `is_confirmed: true`, and masked names losing their `*` because the chat renders Markdown.
+   We added a `next_step` hint to the booking result, removed field names from replies in code, and masked with `xxx` / `○`.
+   The final booking screenshots show none of the three.
 
 ---
 
@@ -195,7 +199,7 @@ Also worth one or two sentences (from `docs/test_results.md` sections 2 and 5):
 
 ## 8. Checklist (before you hand in)
 
-- [ ] PDF named `[Student ID]_Wenxin Shen_CustomerService.pdf` and uploaded
+- [ ] PDF named `F113118101_沈文鑫_CustomerService.pdf` and uploaded
 - [ ] GitHub repository is public, the link is in Basic Information, and it opens in a private (incognito) window
 - [ ] On the GitHub page, `.env` and `center.db` are **not** there
 - [ ] Information table 15 topics (≥ 8), records table 20 rows (≥ 15), 10 tools covering all four kinds
@@ -204,26 +208,29 @@ Also worth one or two sentences (from `docs/test_results.md` sections 2 and 5):
 
 ---
 
-## Screenshots to take by hand
+## Screenshots
 
-Start the app with `python app.py` and open <http://127.0.0.1:7860>. **Restart the app before the booking screenshots** so the
-sample data is fresh (the database is rebuilt at every start). Save the files in `images/` with these names (the README uses
-them). In every screenshot, the **right-hand "Tools used" panel must be visible**: the timing table and the JSON trace with
-`tool`, `args` and `result`. Click open the trace items you want to show.
+The screenshots in `images/` were taken automatically by `tests/take_screenshots.py` (Playwright, browser width 1680 px).
+The script restarts `app.py` for each group, so the database is rebuilt from the CSV files, asks the questions, waits until the
+answer is finished and the trace shows "本輪總耗時", checks that the trace contains the expected tool and result, and saves
+the full page with the whole JSON trace visible. To take them by hand instead: `python app.py`, open <http://127.0.0.1:7860>,
+and ask the same questions; the right-hand "Tools used" panel must be visible in every shot.
 
-| # | File name | What to type | What must be visible in the trace | Used in |
+| # | File name | Question | What the trace shows | Used in |
 |---|---|---|---|---|
-| 1 | `images/screenshot-main.png` | (after shot 2) the whole page | greeting, sample-question buttons, the chat, and the right panel with Model / TOOL_MODE / timing table | README top |
-| 2 | `images/conv1-in-data.png` | 學生游泳一次多少錢？ | `search_services` (or `calculate_cost`) with args `{"keyword": "游泳"…}` and the result row with `"price": 80` | Report 5.1 #1, README |
-| 3 | `images/conv2-maths.png` | 下週二下午 4 點租羽球場 2 小時多少錢？ | `calculate_cost` with `date` (a Tuesday), `start_time: "16:00"`, `hours: 2`; result items 250 (離峰) and 350 (尖峰), `"total": 600` | Report 5.1 #2, README |
-| 4 | `images/conv3-not-in-data.png` | 你們有賣運動飲料嗎？ | `search_services` → `"found": false`, then `transfer_to_human` with the phone number | Report 5.1 #3, README |
-| 5 | `images/conv4-not-our-job.png` | 幫我寫一篇作文 | the trace shows `{"note": "no tool called"}` and the timing table has only 「產生回答」 | Report 5.1 #4, README |
-| 6 | `images/booking-1-preview.png` | 這週六的空中瑜珈還有名額嗎？成團了嗎？ then 我要報名，我叫王小明，電話 0912345678 | second turn: `book_group_class` **without** `confirm_token`; result `"status": "preview"`, the summary, and a `confirm_token` | Report 7 |
-| 7 | `images/booking-2-confirmed.png` | 確認 | `book_group_class` **with** the same `confirm_token`; result `"status": "booked"`, `booking_id`, and `"is_confirmed": true` (3 → 4 people, the class now runs) | Report 7, README |
-| 8 | `images/booking-3-waitlist-promotion.png` | (new chat) 我是周建宏，電話 0922000001，我要取消 TRX 的報名，報名編號 4 then 確認 | `cancel_booking` preview, then `cancel_booking` with the token; result `"status": "cancelled"` and `"promoted_from_waitlist": {"member_name": "曾*琪", …}` | Report 7 |
-| 9 | `images/tool-choice-test.png` | in a terminal: `python tests/run_tool_selection.py` (takes about 8–10 minutes) | the PASS / FAIL lines and the final `Tool choice: …/24` line | Report 5.2 |
-| 10 (optional) | `images/streaming-status.png` | 這週有哪些團體課？ (take the shot while it is working) | the chat bubble shows 「⏳ 正在查詢團課名額…」 and the trace already has `list_group_classes` | Report 7 "something else" |
+| 1 | `images/screenshot-main.png` | (the page after shot 2) | greeting, sample-question buttons, chat, Model / TOOL_MODE line and timing table | README top |
+| 2 | `images/conv1-in-data.png` | 學生游泳一次多少錢？ | `search_services` → row S02 `溫水游泳池 單次學生票`, `"price": 80` | Report 5.1 #1 |
+| 3 | `images/conv2-maths.png` | 下週二下午 4 點租羽球場 2 小時多少錢？ | `calculate_cost` (date a Tuesday, 16:00, 2 hours) → 250 off-peak + 350 peak, `"total": 600` | Report 5.1 #2 |
+| 4 | `images/conv3-not-in-data.png` | 你們有賣運動飲料嗎？ | `search_services` → `"found": false` → `transfer_to_human` | Report 5.1 #3 |
+| 5 | `images/conv4-not-our-job.png` | 幫我寫一篇作文 | `{"note": "no tool called"}`, timing table only 「產生回答」 | Report 5.1 #4 |
+| 6 | `images/booking-0-check.png` | 這週六的空中瑜珈還有名額嗎？成團了嗎？ | `list_group_classes` → G01: 3 enrolled, min 4, short by 1 | Report 7 |
+| 7 | `images/booking-1-preview.png` | 我要報名，我叫王小明，電話 0912345678 | `book_group_class` **without** token → `"status": "preview"`, summary, `confirm_token` | Report 7 |
+| 8 | `images/booking-2-confirmed.png` | 確認 | `book_group_class` **with** the token → `"status": "booked"`, `booking_id`, class now runs (4/4) | Report 7, README |
+| 9 | `images/booking-3-count.png` | 現在空中瑜珈報名幾個人了？成團了嗎？ | `list_group_classes` again → 4 enrolled, `is_confirmed: true` | Report 7 |
+| 10 | `images/booking-4-cancel-preview.png` | 另外，我朋友周建宏要取消他這週二 TRX 的報名，報名編號 4，電話 0922000001 | `cancel_booking` without token → preview, `waitlist_will_be_promoted: true` | Report 7 |
+| 11 | `images/booking-5-waitlist-promotion.png` | 確認 | `cancel_booking` with the token → `"status": "cancelled"`, `"promoted_from_waitlist": {"member_name": "曾○琪", …}` | Report 7 |
+| 12 | `images/streaming-status.png` | 這週有哪些團體課？ (taken while it works) | chat bubble shows 「⏳ 正在查詢團課名額…」 | Report 7 |
+| 13 | `images/tool-choice-test.png` | `python tests/run_tool_selection.py` | the PASS / FAIL lines and the final score (terminal output drawn as an image) | Report 5.2 |
 
-Tips: the trace panel shows the **current turn only**, so take each booking screenshot right after its turn. If the model asks
-a question first (for example "do you want to join the waitlist?"), answer it and take the screenshot on the turn where the
-tool shown above is called.
+Shots 6–11 are one continuous conversation: check → preview → confirm → count again → cancel preview → cancel and promotion
+from the waitlist.

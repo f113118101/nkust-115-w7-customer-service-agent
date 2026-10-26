@@ -1,0 +1,15 @@
+[booking] attempt 1
+  ask: 這週六的空中瑜珈還有名額嗎？成團了嗎？
+  saved images\booking-0-check.png
+  ask: 我要報名，我叫王小明，電話 0912345678
+  saved images\booking-1-preview.png
+  ask: 確認
+  saved images\booking-2-confirmed.png
+  ask: 現在空中瑜珈報名幾個人了？成團了嗎？
+  saved images\booking-3-count.png
+  ask: 另外，我朋友周建宏要取消他這週二 TRX 的報名，報名編號 4，電話 0922000001
+  saved images\booking-4-cancel-preview.png
+  ask: 確認
+  saved images\booking-5-waitlist-promotion.png
+
+Done.

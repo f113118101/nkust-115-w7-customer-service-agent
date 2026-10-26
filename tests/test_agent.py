@@ -303,3 +303,17 @@ def test_thinking_default_sends_nothing(monkeypatch):
     agent.run_agent("你好")
     assert "extra_body" not in client.requests[0]
     assert not client.requests[0]["messages"][0]["content"].startswith("/no_think")
+
+
+def test_strip_field_names():
+    s = agent.strip_field_names
+    assert s("班級已確定成團（is_confirmed: true）。") == "班級已確定成團。"
+    assert s("目前狀態：已報名（enrolled）") == "目前狀態：已報名"
+    assert s("取消後會由候補遞補（waitlist_will_be_promoted: true）") == "取消後會由候補遞補"
+    assert s("費用 NT$600（250 + 350）") == "費用 NT$600（250 + 350）"  # 一般括號說明不動
+
+
+def test_reply_is_cleaned_before_done(monkeypatch):
+    use(monkeypatch, [reply("已確定成團（is_confirmed: true）")])
+    text, _, history = agent.run_agent("成團了嗎？")
+    assert text == "已確定成團" and history[-1]["content"] == "已確定成團"
