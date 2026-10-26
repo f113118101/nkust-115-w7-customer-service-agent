@@ -231,7 +231,11 @@ def test_auto_mode_bad_request_means_json(monkeypatch):
 def test_system_prompt_has_date_and_rules():
     p = prompts.build_system_prompt(datetime(2026, 10, 26, 10, 0))
     assert "Today is 2026-10-26 (Monday)" in p and "2026-10-31 Saturday" in p
-    assert "2026-11-02 Monday" in p and "2026-11-03" not in p  # 只列今天 + 7 天
+    # 日期表從今天列到下週日，並標示本週 / 下週
+    assert "2026-10-27 Tuesday (this week, tomorrow)" in p
+    assert "2026-11-03 Tuesday (next week)" in p and "2026-11-08 Sunday (next week)" in p
+    assert "2026-11-09" not in p
+    assert "下週二 = 2026-11-03" in p
     for section in ("Grounding rules", "Scope rules", "Routing rules", "Language and format rules"):
         assert section in p
     assert "assumptions" in p and "cheapest_plan" in p
@@ -317,3 +321,9 @@ def test_reply_is_cleaned_before_done(monkeypatch):
     use(monkeypatch, [reply("已確定成團（is_confirmed: true）")])
     text, _, history = agent.run_agent("成團了嗎？")
     assert text == "已確定成團" and history[-1]["content"] == "已確定成團"
+
+
+def test_calendar_on_sunday_next_week_starts_tomorrow():
+    p = prompts.build_system_prompt(datetime(2026, 11, 1, 10, 0))  # 週日
+    assert "2026-11-01 Sunday (this week, today)" in p
+    assert "2026-11-02 Monday (next week, tomorrow)" in p and "2026-11-08 Sunday (next week)" in p

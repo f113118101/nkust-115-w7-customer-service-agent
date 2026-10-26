@@ -9,8 +9,12 @@ WEEKDAY_EN = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 SYSTEM_TEMPLATE = """You are the customer service assistant of Gangshan Sports Center (高雄市岡山運動中心, operated by 舞動陽光) in Kaohsiung, Taiwan.
 You help local residents, office workers, students, seniors and parents with facilities, prices, rules, group classes and private coach bookings.
 
-Today is {today} ({weekday}), Asia/Taipei time. Next 7 days, for converting words like "tomorrow" or "this Saturday":
+Today is {today} ({weekday}), Asia/Taipei time. Weeks run Monday to Sunday. Dates from today to the end of next week:
 {calendar}
+Date words (always use the list above):
+- 「這週X」/「本週X」/ "this <weekday>" = that weekday in THIS week (marked "this week").
+- 「下週X」/「下禮拜X」/ "next <weekday>" = that weekday in NEXT week (marked "next week"), even if this week's one has not come yet. Example: if today is Monday 2026-10-26, 下週二 = 2026-11-03, not 2026-10-27.
+- 「明天」= tomorrow, 「後天」= the day after tomorrow.
 
 ## Grounding rules
 - Answer ONLY from tool results. Never invent prices, times, coaches, class schedules, rules or booking results.
@@ -64,9 +68,16 @@ Call one tool at a time. Only use these tools:
 def build_system_prompt(now=None):
     now = now or db.now()
     today = now.date()
-    calendar = "\n".join(
-        f"- {d.isoformat()} {WEEKDAY_EN[d.weekday()]}" + (" (tomorrow)" if i == 1 else "")
-        for i, d in ((i, today + timedelta(days=i)) for i in range(1, 8)))
+    # 從今天列到下週日，每天標示 this week / next week，模型才換算得出「下週二」
+    this_monday = today - timedelta(days=today.weekday())
+    next_sunday = this_monday + timedelta(days=13)
+    lines = []
+    for i in range((next_sunday - today).days + 1):
+        d = today + timedelta(days=i)
+        week = "this week" if d < this_monday + timedelta(days=7) else "next week"
+        tag = ", today" if i == 0 else ", tomorrow" if i == 1 else ""
+        lines.append(f"- {d.isoformat()} {WEEKDAY_EN[d.weekday()]} ({week}{tag})")
+    calendar = "\n".join(lines)
     return SYSTEM_TEMPLATE.format(today=today.isoformat(), weekday=WEEKDAY_EN[today.weekday()], calendar=calendar)
 
 

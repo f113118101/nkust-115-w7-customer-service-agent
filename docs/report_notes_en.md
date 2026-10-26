@@ -193,7 +193,7 @@ Also worth one or two sentences (from `docs/test_results.md` sections 2 and 5):
 | A tool that changes data | Yes | `book_group_class`, `book_private_session`, `cancel_booking` in `tools.py`. The first call returns a preview and a `confirm_token` (stored in `pending_actions`, 10-minute expiry). The data is written only when the call is repeated with the same arguments and the token after the customer confirms; a wrong, expired or reused token, or changed details, is refused. Group classes handle min / max students, a waitlist, and automatic promotion from the waitlist on cancellation; private sessions check the coach's hours, group class clashes and double bookings. Tests: `tests/test_tools.py`; screenshots: booking flow. |
 | Two languages | Yes | `name_en` columns in `services.csv` and `group_classes.csv` are used to match English names (「aerial yoga」「gym」「pickleball」), and the prompt makes the agent answer in the customer's language. Held-out question H5 「請問 aerial yoga 這週六還有 spot 嗎？」 passed. |
 | Forgiving names | Yes | `data/aliases.csv` (67 aliases, e.g. 游泳 → 溫水游泳池, 空瑜 → 空中瑜珈, 羽毛球 → 羽球場, 敬老 → half price) plus partial matching and word scoring in `db.py`. 「學生游泳票 ×3」 finds the student ticket and gives NT$240. |
-| Something else | Yes | Live tool trace with the seconds for each step; streamed answers with a status line (「正在查詢團課名額…」); a JSON fallback mode for models without tool calling; 107 unit tests including the agent loop with a fake LLM. |
+| Something else | Yes | Live tool trace with the seconds for each step; streamed answers with a status line (「正在查詢團課名額…」); a JSON fallback mode for models without tool calling; 110 unit tests including the agent loop with a fake LLM. |
 
 ---
 

@@ -7,6 +7,8 @@ Playwright 只裝在本機（不在 requirements.txt）：
     python tests/take_screenshots.py --only conv2,booking # 只重截某幾組
     python tests/take_screenshots.py --log-image docs/perf/x.log images/tool-choice-test.png
                                                           # 把終端機輸出的 log 轉成截圖
+    python tests/take_screenshots.py --log-summary-image docs/perf/x.log images/tool-choice-summary.png
+                                                          # 只畫答錯題目與分數（報告用）
 
 每題等「本輪總耗時」出現（回答完成、工具軌跡已更新）才截圖；每組之間清除對話並 sleep 4 秒。
 每一步會檢查工具軌跡是否符合預期，不符合就整組重來（最多重試 2 次）。
@@ -18,6 +20,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -29,11 +32,15 @@ URL = f"http://127.0.0.1:{PORT}/"
 SLEEP_SEC = 4
 ANSWER_TIMEOUT_MS = 150_000
 MAX_RETRIES = 2
+_today = datetime.now(timezone(timedelta(hours=8))).date()
+NEXT_TUESDAY = (_today - timedelta(days=_today.weekday()) + timedelta(days=8)).isoformat()
 
 # 每組：(組名, [(客人訊息, 截圖檔名或 None, 軌跡中必須出現的字串)])；同一組在同一段對話中進行
 GROUPS = [
     ("conv1", [("學生游泳一次多少錢？", "conv1-in-data.png", ["80"])]),
-    ("conv2", [("下週二下午 4 點租羽球場 2 小時多少錢？", "conv2-maths.png", ["calculate_cost", "600"])]),
+    # 「下週二」= 下一個週一到週日那週的週二
+    ("conv2", [("下週二下午 4 點租羽球場 2 小時多少錢？", "conv2-maths.png",
+                ["calculate_cost", "600", NEXT_TUESDAY])]),
     ("conv3", [("你們有賣運動飲料嗎？", "conv3-not-in-data.png", ["found", "transfer_to_human"])]),
     # 不該呼叫工具：軌跡裡只有「產生回答」那一步（tool 為 null），見 NO_TOOL_CHECK
     ("conv4", [("幫我寫一篇作文", "conv4-not-our-job.png", ["answer"])]),
@@ -152,16 +159,28 @@ def shoot_streaming(page):
                            timeout=ANSWER_TIMEOUT_MS)
 
 
-def render_log(log_path, out_path):
-    """把終端機輸出（例如工具選擇測試）畫成像終端機的圖片。"""
+def summarize_log(text):
+    """只留答錯的題目與最後的分數，其餘 PASS 行以一行說明代替（報告用，字放大才讀得清楚）。"""
+    lines = text.splitlines()
+    passed = [l for l in lines if l.startswith("[PASS]")]
+    failed = [l for l in lines if l.startswith("[FAIL]")]
+    summary = [l for l in lines if l.startswith(("Tool choice:", "Accuracy:"))]
+    return "\n".join([f"... {len(passed)} PASS lines not shown ...", *failed, "", *summary])
+
+
+def render_log(log_path, out_path, summary=False):
+    """把終端機輸出（例如工具選擇測試）畫成像終端機的圖片；summary=True 時只畫摘要、字放大並自動換行。"""
     from playwright.sync_api import sync_playwright
     text = Path(log_path).read_text(encoding="utf-8")
+    if summary:
+        text = summarize_log(text)
+    font, width, wrap = ("22px", 1320, "pre-wrap") if summary else ("14px", 1600, "pre")
     page_html = ("<html><body style='margin:0;background:#1e1e1e'><pre style='color:#d4d4d4;"
-                 "font:14px Consolas,\"Microsoft JhengHei\",monospace;padding:16px;margin:0;white-space:pre'>"
+                 f"font:{font} Consolas,\"Microsoft JhengHei\",monospace;padding:16px;margin:0;white-space:{wrap}'>"
                  f"$ python tests/run_tool_selection.py\n{html.escape(text)}</pre></body></html>")
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        page = browser.new_page(viewport={"width": 1600, "height": 400})
+        page = browser.new_page(viewport={"width": width, "height": 50})
         page.set_content(page_html)
         page.screenshot(path=str(out_path), full_page=True)
         browser.close()
@@ -172,9 +191,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", help="comma-separated groups: conv1,conv2,conv3,conv4,booking,streaming")
     ap.add_argument("--log-image", nargs=2, metavar=("LOG", "PNG"))
+    ap.add_argument("--log-summary-image", nargs=2, metavar=("LOG", "PNG"),
+                    help="only the FAIL lines and the score, in a larger font")
     opts = ap.parse_args()
     if opts.log_image:
         render_log(*opts.log_image)
+        return
+    if opts.log_summary_image:
+        render_log(*opts.log_summary_image, summary=True)
         return
     from playwright.sync_api import sync_playwright
 

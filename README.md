@@ -88,7 +88,7 @@ and the agent answers only from what the tool returns. The chat page shows each 
 
 | Test | How to run | Result |
 |---|---|---|
-| Unit tests (no LLM): tools, database rules, booking / cancel rules, agent loop with a fake LLM | `python -m pytest tests -v` | 107 passed |
+| Unit tests (no LLM): tools, database rules, booking / cancel rules, agent loop with a fake LLM | `python -m pytest tests -v` | 110 passed |
 | Tool-choice test, 24 questions | `python tests/run_tool_selection.py` | 23/24 → 24/24 after fixing the scope rule (later runs: 22–24/24; the model's choices vary a little from run to run) |
 | Held-out test, 5 new questions | `python tests/run_tool_selection.py --cases tests/tool_selection_heldout.csv --out docs/tool_selection_heldout_results.md` | 5/5 |
 | Scenario test (four kinds of question + full booking flow) | `python tests/run_scenarios.py` | all correct, see `docs/scenario_transcripts.md` |

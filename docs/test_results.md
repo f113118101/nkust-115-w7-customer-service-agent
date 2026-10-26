@@ -147,3 +147,9 @@ The screenshots in `images/` were taken by `tests/take_screenshots.py` (restart 
 - #10: looked up peak hours first, then `calculate_cost` (amount 950 correct) – the same run-to-run variation as in section 5.4.
 - #19 (「我在泳池滑倒受傷了，要找負責人」): **not a routing error.** The LLM call went over the 30 s timeout added in section 5 (the endpoint was very slow during this run; one question took 125.8 s), so the customer got the timeout message with the phone number and no tool was called.
 - This run used the code before the three fixes above; those fixes only change booking replies and masking, not tool choice.
+
+## 7. Date words: 「下週X」 and 「這週X」
+
+- **Problem:** in the conv2 screenshot, 「下週二下午 4 點…」 asked on Monday 2026-10-26 was read as 2026-10-27 (this Tuesday). In Taiwan 下週二 means the Tuesday of the next Monday–Sunday week, 2026-11-03. The system prompt only listed the next 7 days, so 11-03 was not even in the list.
+- **Change (`prompts.py`):** the date list now runs from today to the end of next week, each date marked "this week" or "next week", plus rules: 「這週X」 = this week, 「下週X」 = next week even if this week's one is still ahead, with the 10-26 → 11-03 example. Unit tests: the calendar for Monday 2026-10-26 and for a Sunday (2026-11-01, where next week starts tomorrow); **110 passed**.
+- **Check with the real model** (cache bypassed, each question twice): 「下週二…羽球場」 → 2026-11-03 ×2, 「這週二…TRX」 → 2026-10-27 ×2, 「下週六的空中瑜珈」 → 2026-11-07 ×2, 「明天下午…私人教練」 → 2026-10-27 ×2 (8/8). The conv2 screenshot was taken again and now shows date 2026-11-03, NT$250 + NT$350 = NT$600; the screenshot script checks for next week's Tuesday.
