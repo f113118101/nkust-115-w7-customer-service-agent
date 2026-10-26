@@ -1,0 +1,35 @@
+[PASS] #1  10.0s (first text   7.9s) 營業時間到幾點？ -> get_center_info (all: ['get_center_info'])
+[PASS] #2  12.6s (first text   9.1s) 怎麼搭捷運到你們那邊？ -> get_center_info (all: ['get_center_info'])
+[PASS] #3   9.1s (first text   6.2s) 健身房可以穿拖鞋嗎？ -> get_center_info (all: ['get_center_info'])
+[PASS] #4  18.8s (first text  14.0s) 你們有停車場嗎？ -> get_center_info (all: ['get_center_info'])
+[PASS] #5  16.8s (first text  13.9s) 櫃台可以刷卡嗎？ -> get_center_info (all: ['get_center_info'])
+[PASS] #6  11.8s (first text   9.2s) 學生游泳票一次多少錢？ -> search_services (all: ['search_services'])
+[PASS] #7  21.4s (first text  15.5s) 桌球場租借怎麼收費？ -> search_services (all: ['search_services', 'get_center_info'])
+[PASS] #8  13.2s (first text  10.8s) 可以租籃球場嗎？ -> search_services (all: ['search_services'])
+[PASS] #9   7.2s (first text   5.2s) What time do you open? -> get_center_info (all: ['get_center_info'])
+[FAIL] #10  35.0s (first text  30.2s) 這週六早上 9 點租羽球場 3 小時多少錢？ -> get_center_info (all: ['get_center_info', 'calculate_cost'])
+[FAIL] #11  44.4s (first text  39.1s) 私人教練上 12 堂總共要多少錢？ -> search_services (all: ['search_services', 'calculate_cost'])
+[PASS] #12  10.5s (first text   8.4s) 我要買 3 張游泳學生票，總共多少？ -> calculate_cost (all: ['calculate_cost'])
+[PASS] #13  16.9s (first text  10.0s) 我每週游泳 3 次，買月卡還是回數票比較省？ -> compare_plans (all: ['compare_plans'])
+[PASS] #14   7.3s (first text   6.6s) 週三的 Zumba 額滿了嗎？ -> list_group_classes (all: ['list_group_classes'])
+[PASS] #15  17.3s (first text  12.9s) 這週有哪些團體課？ -> list_group_classes (all: ['list_group_classes'])
+[PASS] #16   6.5s (first text   6.5s) 明天有游泳教練可以上一對一嗎？ -> find_private_slots (all: ['find_private_slots'])
+[PASS] #17   6.8s (first text   5.5s) 我要報名這週六的兒童游泳班，林小華 0911222333 -> list_group_classes (all: ['list_group_classes', 'book_group_class'])
+[PASS] #18   4.0s (first text   3.2s) 我要客訴，櫃台人員態度很差 -> transfer_to_human (all: ['transfer_to_human'])
+[PASS] #19   4.2s (first text   3.3s) 我在泳池滑倒受傷了，要找負責人 -> transfer_to_human (all: ['transfer_to_human'])
+[PASS] #20   7.9s (first text   7.2s) 你們有賣泳鏡嗎？ -> search_services (all: ['search_services', 'transfer_to_human'])
+[PASS] #21  15.9s (first text  13.0s) 可以帶狗進去嗎？ -> get_center_info (all: ['get_center_info', 'get_center_info', 'get_center_info', 'search_services', 'transfer_to_human'])
+[PASS] #22   2.2s (first text   1.9s) 幫我寫一首關於秋天的詩 -> none (all: [])
+[PASS] #23   4.1s (first text   4.1s) 今天台積電股價多少？ -> none (all: [])
+[PASS] #24   2.5s (first text   2.2s) 推薦一間高雄市區別家健身房 -> none (all: [])
+
+Accuracy: 22/24 = 92%   Average: 12.8 s   First text: 10.2 s
+Wrote docs\perf\optimized_v2_main.md
+[PASS] #H1  23.2s (first text  22.0s) 我和我媽媽週日下午 3 點想租匹克球場 2 小時，總共多少錢？ -> calculate_cost (all: ['calculate_cost'])
+[PASS] #H2  12.4s (first text  10.9s) 我想約下週三早上 10 點陳雅婷教練的一對一課，我叫林美君，電話 0955123456 -> find_private_slots (all: ['find_private_slots', 'book_private_session'])
+[PASS] #H3  11.5s (first text   6.1s) 你們有提供置物櫃嗎？要另外收費嗎？ -> search_services (all: ['search_services', 'transfer_to_human'])
+[PASS] #H4   7.6s (first text   7.0s) 幫我解這題微積分：x 平方的積分是多少？ -> none (all: [])
+[PASS] #H5  14.7s (first text  13.5s) 請問 aerial yoga 這週六還有 spot 嗎？ -> list_group_classes (all: ['list_group_classes'])
+
+Accuracy: 5/5 = 100%   Average: 13.9 s   First text: 11.9 s
+Wrote docs\perf\optimized_v2_heldout.md

@@ -1,0 +1,6 @@
+id,question,acceptable_tools,category,expected_amount
+H1,我和我媽媽週日下午 3 點想租匹克球場 2 小時，總共多少錢？,calculate_cost,maths,700
+H2,我想約下週三早上 10 點陳雅婷教練的一對一課，我叫林美君，電話 0955123456,find_private_slots|book_private_session,booking,
+H3,你們有提供置物櫃嗎？要另外收費嗎？,get_center_info|search_services|transfer_to_human,not_in_data,
+H4,幫我解這題微積分：x 平方的積分是多少？,none,out_of_scope,
+H5,請問 aerial yoga 這週六還有 spot 嗎？,list_group_classes,mixed_language,

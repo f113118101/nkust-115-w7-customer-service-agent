@@ -1,0 +1,4 @@
+pre_opt #10: 3/4 pass ['calculate_cost', 'calculate_cost', 'get_center_info', 'calculate_cost']
+pre_opt #11: 4/4 pass ['calculate_cost', 'calculate_cost', 'calculate_cost', 'calculate_cost']
+current #10: 4/4 pass ['calculate_cost', 'calculate_cost', 'calculate_cost', 'calculate_cost']
+current #11: 4/4 pass ['calculate_cost', 'calculate_cost', 'calculate_cost', 'calculate_cost']

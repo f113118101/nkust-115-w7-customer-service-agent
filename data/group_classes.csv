@@ -1,0 +1,9 @@
+class_id,name,name_en,coach_id,weekday,start_time,duration_min,room,min_students,max_students,price,available
+G01,空中瑜珈,Aerial Yoga,C02,6,10:00,60,舞蹈瑜珈教室,4,8,250,1
+G02,Zumba,Zumba,C04,3,19:00,60,有氧教室,6,20,250,1
+G03,TRX懸吊訓練,TRX Suspension Training,C01,2,19:00,60,多功能教室,3,8,250,1
+G04,有氧舞蹈,Aerobic Dance,C04,5,19:00,60,有氧教室,5,20,250,1
+G05,兒童游泳班,Kids Swimming Class,C03,6,15:00,60,溫水游泳池,3,6,250,1
+G06,銀髮律動,Senior Rhythm Exercise,C04,2,09:00,60,兒童銀髮舞蹈教室,4,15,250,1
+G07,皮拉提斯,Pilates,C02,4,19:00,60,舞蹈瑜珈教室,4,12,250,1
+G08,親子瑜珈,Parent-Child Yoga,C02,7,10:00,60,舞蹈瑜珈教室,4,10,250,0

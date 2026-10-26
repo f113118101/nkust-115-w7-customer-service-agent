@@ -1,0 +1,21 @@
+service_id,name,name_en,category,price,unit,peak_type,identity,available,note
+S01,溫水游泳池 單次全票,Pool single entry (adult),pool,100,次,none,adult,1,
+S02,溫水游泳池 單次學生票,Pool single entry (student),pool,80,次,none,student,1,須出示學生證
+S03,溫水游泳池 單次半票,Pool single entry (half price),pool,50,次,none,half,1,65歲以上、6歲以下
+S04,溫水游泳池 月卡,Pool monthly pass,pool,1250,30天,none,any,1,啟用日起30天內不限次數
+S05,溫水游泳池 回數票,Pool 30-visit ticket book,pool,2400,30張,none,any,1,效期90天，到期補差額可使用
+S06,體適能中心 單次全票,Gym single entry (adult),gym,50,小時,none,adult,1,未滿16歲禁止入場
+S07,體適能中心 月卡,Gym monthly pass,gym,1250,30天,none,any,1,啟用日起30天內不限次數
+S08,體適能中心 回數票,Gym 30-visit ticket book,gym,2400,30張,none,any,1,效期90天，到期補差額可使用
+S09,身體組成分析,Body composition analysis,gym,200,次,none,any,1,
+S10,羽球場 尖峰,Badminton court (peak),court,350,面/時,peak,any,1,
+S11,羽球場 離峰,Badminton court (off-peak),court,250,面/時,offpeak,any,1,
+S12,桌球 尖峰,Table tennis (peak),court,150,面/時,peak,any,1,
+S13,桌球 離峰,Table tennis (off-peak),court,100,面/時,offpeak,any,1,
+S14,匹克球 尖峰,Pickleball court (peak),court,350,面/時,peak,any,1,
+S15,匹克球 離峰,Pickleball court (off-peak),court,250,面/時,offpeak,any,1,
+S16,籃球場租借,Basketball court rental,court,,面/時,none,any,0,本館暫不開放籃球場租借
+S17,私人教練 單堂,Personal training (1 session),private_coach,1200,堂,none,any,1,示範資料；60分鐘 1對1
+S18,私人教練 10堂方案,Personal training 10-session pack,private_coach,10800,10堂,none,any,1,示範資料
+S19,團體課 單堂,Group class (1 session),group_class,250,堂,none,any,1,示範資料
+S20,團體課 10堂方案,Group class 10-session pack,group_class,2200,10堂,none,any,1,示範資料
