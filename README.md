@@ -119,8 +119,8 @@ w7_work/
 1. Download the project:
 
    ```bash
-   git clone https://github.com/wenxin322/[your-repo].git
-   cd [your-repo]
+   git clone https://github.com/f113118101/nkust-115-w7-customer-service-agent.git
+   cd nkust-115-w7-customer-service-agent
    ```
 
 2. Install the packages (Python 3.10 or newer):

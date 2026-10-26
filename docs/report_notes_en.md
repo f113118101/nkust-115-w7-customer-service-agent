@@ -14,7 +14,7 @@ words where the template asks for that (sections 1 and 6 especially). Numbers co
 | Your shop or office | Gangshan Sports Center (高雄市岡山運動中心, operated by 舞動陽光), Kaohsiung |
 | Model you used | `Furen-large` on the NKUST iAI endpoint (OpenAI-compatible, native tool calling) |
 | How you built the chat screen | Gradio (Blocks), Python |
-| GitHub link | https://github.com/wenxin322/[your-repo] |
+| GitHub link | https://github.com/f113118101/nkust-115-w7-customer-service-agent |
 
 ---
 
